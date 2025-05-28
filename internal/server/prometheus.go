@@ -72,6 +72,9 @@ func NewPrometheusProvider(prometheusConfig *MetricsConfigProvider, logger *zap.
 	return &PrometheusProvider{config: prometheusConfig, logger: logger}
 }
 
+// RoundTrip adds custom headers to each HTTP request before forwarding it.
+// Acts like middleware for injecting headers into Prometheus API calls.
+// Implements the http.RoundTripper interface.
 func (h *headerRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	for key, values := range h.headers {
 		for _, value := range values {
